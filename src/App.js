@@ -8,7 +8,7 @@ import './app.css'
 
 function App(){
 
-console.log(process.env.API_KEY)
+
 const[listCurrency,setCurrency]=useState([])
 const [fromCurrency,setFromCurrency]=useState()
 const [toCurrency,setToCurrency]=useState()
@@ -31,15 +31,15 @@ if(amountInFormCurrency){
   toAmount=exchangeRate*amount;
 }
 else{
-  console.log(amount)
-  console.log(exchangeRate)
+ /* console.log(amount)
+  console.log(exchangeRate)*/
   toAmount=amount
   fromAmount=amount/exchangeRate
 }
 
 useEffect(()=>{
 const myHeaders = new Headers();
-myHeaders.append("apikey", "key");
+myHeaders.append("apikey", "<--API-KEY-->");
 const requestOptions = {
   method: 'GET',
   redirect: 'follow',
@@ -61,19 +61,22 @@ fetch("https://api.apilayer.com/exchangerates_data/symbols", requestOptions)
 
 useEffect(()=>{
   const myHeaders = new Headers();
-  myHeaders.append("apikey", "key");
+  myHeaders.append("apikey", "<--API-KEY-->");
   const requestOptions = {
     method: 'GET',
     redirect: 'follow',
     headers: myHeaders
   };
-  const url=`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=1`;
-  console.log(url)
-  fetch(url, requestOptions)
+  
+
+  if(fromCurrency!=null && toCurrency!=null){
+    const url=`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=1`;
+    fetch(url, requestOptions)
   .then(response => response.text())
   .then(result =>setExchangeRate(JSON.parse(result).result))
   .catch(error => console.log('error', error));
-},[fromCurrency,toCurrency,amount])
+  }
+},[fromCurrency,toCurrency])
 
   return(
         <div>
