@@ -19,6 +19,7 @@ body{
 h1{
 margin: 0;
 margin-bottom: .6rem;
+color: white;
 }
 .number{
     border: 1px solid #333;
@@ -33,10 +34,11 @@ select{
 .eq{
     font-weight: bold;
     font-size: 2rem;
+    color: white;
 }
 
 /*uqiwfzyxf0h4uad2b30zF92VRsQQ8Dyb
-https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR,GBP' \
+https://api.apilayer.com/exchangerates_data/live?base=USD&symbols=EUR,GBP'\
 --header 'apikey: uqiwfzyxf0h4uad2b30zF92VRsQQ8Dyb'
 
 

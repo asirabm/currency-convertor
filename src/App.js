@@ -1,3 +1,4 @@
+
 //import { render } from "@testing-library/react";
 import React, { useEffect, useState } from "react";
 //import { ReactDOM } from "react";
@@ -6,12 +7,23 @@ import './app.css'
 //import { Axios } from "axios";
 
 function App(){
+
+console.log(process.env.API_KEY)
 const[listCurrency,setCurrency]=useState([])
-const [fromCurrency,setFromCurrency]=useState("")
-const [toCurrency,setToCurrency]=useState("")
+const [fromCurrency,setFromCurrency]=useState()
+const [toCurrency,setToCurrency]=useState()
 const [amount,setAmount]=useState(1)
 const [amountInFormCurrency,setAmountInFromCurrency]=useState(true)
-const[exchangeRate,setExchangeRate]=useState(0)
+const[exchangeRate,setExchangeRate]=useState()
+
+function fromOnChangeAmount(e){
+  setAmount(e.target.value)
+  setAmountInFromCurrency(true)
+  }
+  function toOnChangeAmount(e){
+    setAmount(e.target.value)
+    setAmountInFromCurrency(false)
+  }
 
 let toAmount,fromAmount
 if(amountInFormCurrency){
@@ -19,13 +31,15 @@ if(amountInFormCurrency){
   toAmount=exchangeRate*amount;
 }
 else{
+  console.log(amount)
+  console.log(exchangeRate)
   toAmount=amount
   fromAmount=amount/exchangeRate
 }
 
 useEffect(()=>{
 const myHeaders = new Headers();
-myHeaders.append("apikey", "NBV7mBRsrA413lxw7Dml86c4QBP4Hr4h");
+myHeaders.append("apikey", "key");
 const requestOptions = {
   method: 'GET',
   redirect: 'follow',
@@ -47,30 +61,19 @@ fetch("https://api.apilayer.com/exchangerates_data/symbols", requestOptions)
 
 useEffect(()=>{
   const myHeaders = new Headers();
-  myHeaders.append("apikey", "NBV7mBRsrA413lxw7Dml86c4QBP4Hr4h");
+  myHeaders.append("apikey", "key");
   const requestOptions = {
     method: 'GET',
     redirect: 'follow',
     headers: myHeaders
   };
-  const url=`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount}`;
+  const url=`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=1`;
   console.log(url)
   fetch(url, requestOptions)
   .then(response => response.text())
   .then(result =>setExchangeRate(JSON.parse(result).result))
   .catch(error => console.log('error', error));
-},[fromCurrency,toCurrency])
-
-function fromOnChangeAmount(e){
- setAmount(e.target.value)
-setAmountInFromCurrency(true)
-}
-function toOnChangeAmount(e){
-  setAmount(e.target.value)
-  setAmountInFromCurrency(false)
- }
-
-
+},[fromCurrency,toCurrency,amount])
 
   return(
         <div>
